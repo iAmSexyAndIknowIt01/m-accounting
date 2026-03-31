@@ -1,13 +1,15 @@
+import Link from "next/link"
+
 export default function Hero() {
   return (
     <section className="relative py-36 px-6 text-center overflow-hidden">
 
       {/* BACKGROUND */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50 to-cyan-100 -z-10" />
+      <div className="absolute inset-0 bg-linear-to-br from-white via-blue-50 to-cyan-100 -z-10" />
 
       {/* glow */}
-      <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-blue-400 opacity-20 blur-3xl rounded-full" />
-      <div className="absolute bottom-[-120px] right-[-100px] w-[500px] h-[500px] bg-cyan-400 opacity-20 blur-3xl rounded-full" />
+      <div className="absolute -top-30 left-1/2 -translate-x-1/2 w-175 h-175 bg-blue-400 opacity-20 blur-3xl rounded-full" />
+      <div className="absolute -bottom-30 -right-25 w-125 h-125 bg-cyan-400 opacity-20 blur-3xl rounded-full" />
 
       {/* BADGE */}
       <div className="mb-6 flex justify-center">
@@ -42,9 +44,9 @@ export default function Hero() {
       {/* CTA */}
       <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
 
-        <button className="px-8 py-4 rounded-2xl text-white font-semibold bg-gradient-to-r from-blue-600 to-cyan-500 shadow-lg hover:scale-105 transition">
+        <Link href="/login" className="px-8 py-4 rounded-2xl text-white font-semibold bg-linear-to-r from-blue-600 to-cyan-500 shadow-lg hover:scale-105 transition">
           🚀 Үнэгүй эхлэх
-        </button>
+        </Link>
 
         <button className="px-8 py-4 rounded-2xl border bg-white/80 backdrop-blur hover:bg-white transition">
           ▶ Demo үзэх
