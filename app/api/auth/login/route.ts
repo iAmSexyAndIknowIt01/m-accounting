@@ -15,17 +15,34 @@ export async function POST(req: Request) {
       password,
     })
 
-    if (error) {
+    if (error || !data.user) {
       return NextResponse.json(
         { message: "Имэйл эсвэл нууц үг буруу" },
         { status: 401 }
       )
     }
 
-    return NextResponse.json({
-      user: data.user,
-      session: data.session,
+    // ✅ response үүсгэнэ
+    const res = NextResponse.json({
+      success: true,
     })
+
+    // 🔥 USER ID cookie-д хадгална
+    res.cookies.set("user_id", data.user.id, {
+      httpOnly: false,
+      path: "/",
+      maxAge: 60 * 60 * 24, // 1 өдөр
+    })
+
+    // 🔥 (optional) access token хадгалж болно
+    res.cookies.set("access_token", data.session?.access_token || "", {
+      httpOnly: true,
+      path: "/",
+      maxAge: 60 * 60 * 24,
+    })
+
+    return res
+
   } catch (err) {
     return NextResponse.json(
       { message: "Server error" },
