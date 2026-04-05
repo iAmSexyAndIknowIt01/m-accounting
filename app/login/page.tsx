@@ -10,19 +10,40 @@ export default function LoginPage() {
 
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
+    setError("")
 
-    // ✅ TEST LOGIN
-    if (email === "test1234@gmail.com" && password === "test") {
-      setError("")
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.message || "Алдаа гарлаа")
+        setLoading(false)
+        return
+      }
+
+      // ✅ амжилттай login
       router.push("/dashboard")
-    } else {
-      setError("Имэйл эсвэл нууц үг буруу байна")
+    } catch (err) {
+      setError("Сервертэй холбогдож чадсангүй")
     }
+
+    setLoading(false)
   }
 
   return (
@@ -36,31 +57,25 @@ export default function LoginPage() {
           </h1>
         </Link>
 
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Нэвтрэх</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Нэвтрэх</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* EMAIL */}
           <input
             type="email"
             placeholder="Имэйл"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={`w-full border rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 
-            focus:outline-none focus:ring-2 transition
-            ${error ? "border-red-500 focus:ring-red-400" : "focus:ring-blue-500"}`}
+            className="w-full border rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none"
           />
 
-          {/* PASSWORD */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Нууц үг"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={`w-full border rounded-xl px-4 py-3 pr-12 text-gray-900 placeholder-gray-400 
-              focus:outline-none focus:ring-2 transition
-              ${error ? "border-red-500 focus:ring-red-400" : "focus:ring-blue-500"}`}
+              className="w-full border rounded-xl px-4 py-3 pr-12 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none"
             />
 
             <button
@@ -76,9 +91,10 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-linear-to-r from-blue-600 to-cyan-400 text-white py-3 rounded-xl font-medium hover:scale-[1.02] transition"
+            disabled={loading}
+            className="w-full bg-linear-to-r from-blue-600 to-cyan-400 text-white py-3 rounded-xl font-medium hover:scale-[1.02] transition disabled:opacity-50"
           >
-            Нэвтрэх
+            {loading ? "Нэвтэрч байна..." : "Нэвтрэх"}
           </button>
         </form>
       </div>
