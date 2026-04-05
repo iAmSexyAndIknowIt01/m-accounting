@@ -9,6 +9,7 @@ import {
   Search,
   Menu,
   X,
+  PlusCircle
 } from "lucide-react"
 import Link from "next/link"
 
@@ -80,6 +81,14 @@ export default function DashboardPage() {
               <Home size={18} />
               Dashboard
             </div>
+
+            <Link
+              href="/dashboard/transactions/new"
+              className="flex items-center gap-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 p-3 rounded-xl transition"
+            >
+              <PlusCircle size={18} />
+              Гүйлгээ бүртгэх
+            </Link>
 
             <div className="flex items-center gap-3 text-gray-600 hover:bg-gray-100 p-3 rounded-xl transition">
               <BarChart3 size={18} />
